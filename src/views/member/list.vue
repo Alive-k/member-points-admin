@@ -45,7 +45,11 @@
     </div>
 
     <div class="table-container">
-      <el-table :data="tableData" style="width: 100%" v-loading="loading">
+      <el-table
+        :data="tableData"
+        style="width: 100%; overflow-x: auto"
+        v-loading="loading"
+      >
         <el-table-column prop="id" label="会员ID" width="100" />
         <el-table-column label="会员信息" min-width="180">
           <template #default="scope">
@@ -311,7 +315,7 @@ const getLevelTagType = (level) => {
 }
 
 .search-form .el-form-item {
-  margin-bottom: 0;
+  margin-bottom: 12px;
   margin-right: 24px;
 }
 

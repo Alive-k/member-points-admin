@@ -7,7 +7,7 @@
 
     <!-- Top Stats Cards -->
     <el-row :gutter="24" class="mt-4">
-      <el-col :span="6">
+      <el-col :xs="24" :sm="12" :md="6" :lg="6" :xl="6">
         <div class="stat-card primary">
           <div class="stat-icon">
             <el-icon><Coin /></el-icon>
@@ -26,7 +26,7 @@
           </div>
         </div>
       </el-col>
-      <el-col :span="6">
+      <el-col :xs="24" :sm="12" :md="6" :lg="6" :xl="6">
         <div class="stat-card danger">
           <div class="stat-icon">
             <el-icon><Wallet /></el-icon>
@@ -45,7 +45,7 @@
           </div>
         </div>
       </el-col>
-      <el-col :span="6">
+      <el-col :xs="24" :sm="12" :md="6" :lg="6" :xl="6">
         <div class="stat-card success">
           <div class="stat-icon">
             <el-icon><User /></el-icon>
@@ -64,7 +64,7 @@
           </div>
         </div>
       </el-col>
-      <el-col :span="6">
+      <el-col :xs="24" :sm="12" :md="6" :lg="6" :xl="6">
         <div class="stat-card warning">
           <div class="stat-icon">
             <el-icon><TrendCharts /></el-icon>
@@ -87,7 +87,7 @@
 
     <!-- Main Charts -->
     <el-row :gutter="24" class="mt-4">
-      <el-col :span="16">
+      <el-col :xs="24" :sm="24" :md="16" :lg="16" :xl="16">
         <el-card class="chart-card">
           <template #header>
             <div class="chart-header">
@@ -103,7 +103,7 @@
           <div id="trendChart" class="chart-container"></div>
         </el-card>
       </el-col>
-      <el-col :span="8">
+      <el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
         <el-card class="chart-card">
           <template #header>
             <div class="chart-header">
@@ -118,7 +118,7 @@
 
     <!-- Secondary Charts -->
     <el-row :gutter="24" class="mt-4">
-      <el-col :span="8">
+      <el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
         <el-card class="chart-card">
           <template #header>
             <div class="chart-header">
@@ -128,7 +128,7 @@
           <div id="pieChart" class="chart-container-sm"></div>
         </el-card>
       </el-col>
-      <el-col :span="16">
+      <el-col :xs="24" :sm="24" :md="16" :lg="16" :xl="16">
         <el-card class="chart-card">
           <template #header>
             <div class="chart-header">

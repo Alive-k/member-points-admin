@@ -1,106 +1,45 @@
 <template>
   <div class="common-layout">
     <el-container class="app-wrapper">
-      <!-- Sidebar -->
-      <el-aside width="240px" class="sidebar-container">
-        <div
-          class="logo-container"
-          @click="$router.push('/dashboard')"
-          style="cursor: pointer"
-        >
-          <div class="logo-icon">
-            <el-icon><Monitor /></el-icon>
-          </div>
-          <span class="logo-text">Member Admin</span>
-        </div>
-        <el-scrollbar>
-          <el-menu
-            router
-            :default-active="$route.path"
-            class="el-menu-vertical"
-            :unique-opened="true"
-          >
-            <div class="menu-category">MAIN</div>
-
-            <el-menu-item index="/dashboard">
-              <el-icon><DataLine /></el-icon>
-              <span>首页</span>
-            </el-menu-item>
-
-            <el-sub-menu index="/member">
-              <template #title>
-                <el-icon><User /></el-icon>
-                <span>会员管理</span>
-              </template>
-              <el-menu-item index="/member/list">会员列表</el-menu-item>
-            </el-sub-menu>
-
-            <el-sub-menu index="/points">
-              <template #title>
-                <el-icon><Coin /></el-icon>
-                <span>积分管理</span>
-              </template>
-              <el-menu-item index="/points/account">积分账户</el-menu-item>
-              <el-menu-item index="/points/flow">积分流水</el-menu-item>
-            </el-sub-menu>
-
-            <div class="menu-category">OPERATION</div>
-
-            <el-sub-menu index="/rules">
-              <template #title>
-                <el-icon><Setting /></el-icon>
-                <span>积分规则</span>
-              </template>
-              <el-menu-item index="/rules/get">获取规则</el-menu-item>
-              <el-menu-item index="/rules/use">消耗规则</el-menu-item>
-            </el-sub-menu>
-
-            <el-sub-menu index="/mall">
-              <template #title>
-                <el-icon><Goods /></el-icon>
-                <span>积分商城</span>
-              </template>
-              <el-menu-item index="/mall/goods">商品管理</el-menu-item>
-            </el-sub-menu>
-
-            <el-sub-menu index="/activity">
-              <template #title>
-                <el-icon><Present /></el-icon>
-                <span>运营活动</span>
-              </template>
-              <el-menu-item index="/activity/checkin">签到配置</el-menu-item>
-            </el-sub-menu>
-
-            <div class="menu-category">SYSTEM</div>
-
-            <el-sub-menu index="/statistics">
-              <template #title>
-                <el-icon><PieChart /></el-icon>
-                <span>数据统计</span>
-              </template>
-              <!-- Placeholder for other stats -->
-              <el-menu-item index="/statistics/reports">报表下载</el-menu-item>
-            </el-sub-menu>
-
-            <el-sub-menu index="/system">
-              <template #title>
-                <el-icon><Tools /></el-icon>
-                <span>系统设置</span>
-              </template>
-              <el-menu-item index="/system/role">角色权限</el-menu-item>
-            </el-sub-menu>
-          </el-menu>
-        </el-scrollbar>
+      <!-- Desktop Sidebar -->
+      <el-aside
+        width="240px"
+        class="sidebar-container hidden-xs-only"
+        v-if="!isMobile"
+      >
+        <Sidebar />
       </el-aside>
+
+      <!-- Mobile Sidebar (Drawer) -->
+      <el-drawer
+        v-model="drawerVisible"
+        direction="ltr"
+        :with-header="false"
+        size="240px"
+        class="mobile-sidebar-drawer"
+      >
+        <div class="sidebar-container mobile">
+          <Sidebar @click-menu="drawerVisible = false" />
+        </div>
+      </el-drawer>
 
       <!-- Main Content -->
       <el-container class="main-container">
         <el-header height="60px" class="navbar">
           <div class="navbar-left">
+            <el-button
+              v-if="isMobile"
+              link
+              class="hamburger-btn"
+              @click="drawerVisible = true"
+              style="margin-right: 8px; padding: 8px"
+            >
+              <el-icon :size="24"><Menu /></el-icon>
+            </el-button>
             <h2 class="page-title">{{ currentRouteName }}</h2>
           </div>
           <div class="navbar-right">
-            <div class="search-wrapper">
+            <div class="search-wrapper hidden-xs-only">
               <el-icon class="search-icon"><Search /></el-icon>
               <input type="text" placeholder="Search..." class="search-input" />
             </div>
@@ -110,11 +49,13 @@
                   :size="36"
                   src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
                 />
-                <div class="user-info">
+                <div class="user-info hidden-xs-only">
                   <span class="user-name">Admin</span>
                   <span class="user-role">Super Admin</span>
                 </div>
-                <el-icon class="el-icon--right"><CaretBottom /></el-icon>
+                <el-icon class="el-icon--right hidden-xs-only"
+                  ><CaretBottom
+                /></el-icon>
               </div>
               <template #dropdown>
                 <el-dropdown-menu class="user-dropdown">
@@ -143,19 +84,39 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import {
   CaretBottom,
-  Monitor,
   Search,
   User,
   SwitchButton,
+  Menu,
 } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
+import Sidebar from './Sidebar.vue'
 
 const route = useRoute()
 const router = useRouter()
+
+const isMobile = ref(false)
+const drawerVisible = ref(false)
+
+const checkMobile = () => {
+  isMobile.value = window.innerWidth < 768
+  if (!isMobile.value) {
+    drawerVisible.value = false
+  }
+}
+
+onMounted(() => {
+  checkMobile()
+  window.addEventListener('resize', checkMobile)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', checkMobile)
+})
 
 const currentRouteName = computed(() => {
   const map = {
@@ -167,7 +128,9 @@ const currentRouteName = computed(() => {
     '/rules/use': '消耗规则',
     '/mall/goods': '商品管理',
     '/activity/checkin': '签到配置',
+    '/dashboard': '数据概览',
     '/statistics/overview': '数据概览',
+    '/statistics/reports': '报表下载',
     '/system/role': '角色权限',
   }
   if (route.path.includes('/member/detail')) return '会员详情'
