@@ -317,7 +317,7 @@ const initCharts = async () => {
         position: 'top',
       },
       grid: {
-        height: '70%',
+        height: '65%',
         top: '10%',
       },
       xAxis: {
@@ -503,7 +503,7 @@ onMounted(async () => {
 }
 
 .chart-container-sm {
-  height: 240px;
+  height: 320px;
   width: 100%;
 }
 </style>
